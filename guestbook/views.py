@@ -20,4 +20,10 @@ def addGuestbook(request):
 def deleteForm(request):
     return render(request,'guestbook/deleteform.html')
 
+def deleteGuestbook(request):
+    no = request.POST["no"]
+    password = request.POST["password"]
+
+    models.deleteby_no_and_password(no,password)
+    return HttpResponseRedirect('/guestbook')
 
