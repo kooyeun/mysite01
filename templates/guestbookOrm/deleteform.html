@@ -6,12 +6,12 @@
 
 {% block content %}
 			<div id="guestbook" class="delete-form">
-				<form method="post" action="/guestbook/deleteGuestbook">{%csrf_token%}
-					<input type='hidden' name="no" value="{{request.GET.no}}">
+				<form method="post" action="/guestbookOrm/deleteGuestbook">{%csrf_token%}
+					<input type='hidden' name="id" value="{{request.GET.id}}">
 					<label>비밀번호</label>
 					<input type="password" name="password">
 					<input type="submit" value="확인">
 				</form>
-				<a href="/guestbook">방명록 리스트</a>
+				<a href="/guestbookOrm">방명록 리스트</a>
 			</div>
 {% endblock %}

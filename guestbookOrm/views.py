@@ -18,3 +18,11 @@ def addGuestbook(request):
     guestbook.save()
 
     return HttpResponseRedirect("/guestbookOrm")
+
+def deleteForm(request):
+    return render(request,'guestbookOrm/deleteform.html')
+
+def deleteGuestbook(request):
+    guestbook = Guestbook.objects.filter(id=request.POST['id']).filter(password=request.POST['password'])
+    guestbook.delete()
+    return HttpResponseRedirect("/guestbookOrm")
