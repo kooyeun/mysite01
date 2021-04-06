@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-		<form action="/guestbook/addGuestbook" method="post">{%csrf_token%}
+		<form action="/guestbookOrm/addGuestbook" method="post">{%csrf_token%}
 			<table border=1 width=500>
 				<tr>
 					<td>이름</td><td><input type="text" name="name"></td>

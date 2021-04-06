@@ -28,4 +28,5 @@ urlpatterns = [
    path('guestbook/deleteGuestbook', guestbookviews.deleteGuestbook),
 
    path('guestbookOrm/', guestbookOrmviews.index),
+   path('guestbookOrm/addGuestbook', guestbookOrmviews.addGuestbook),
 ]
