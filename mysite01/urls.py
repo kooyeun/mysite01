@@ -17,11 +17,15 @@ from django.urls import path
 
 import main.views as mainviews
 import guestbook.views as guestbookviews
+import guestbookOrm.views as guestbookOrmviews
 
 urlpatterns = [
    path('', mainviews.index),
+
    path('guestbook/', guestbookviews.index),
    path('guestbook/addGuestbook', guestbookviews.addGuestbook),
    path('guestbook/deleteForm', guestbookviews.deleteForm),
    path('guestbook/deleteGuestbook', guestbookviews.deleteGuestbook),
+
+   path('guestbookOrm/', guestbookOrmviews.index),
 ]

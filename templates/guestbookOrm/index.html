@@ -23,10 +23,10 @@
 			{% for guestRow in guest_list %}
 			<table width=510 border=1>
 				<tr>
-					<td>[{{guestRow.no}}]</td>
+					<td>[{{guestRow.id}}]</td>
 					<td>{{guestRow.name}}</td>
-					<td>{{guestRow.reg_date}}</td>
-					<td><a href="/guestbook/deleteForm?no={{guestRow.no}}">삭제</a></td>
+					<td>{{guestRow.regdate}}</td>
+					<td><a href="/guestbook/deleteForm?id={{guestRow.id}}">삭제</a></td>
 				</tr>
 				<tr>
 					<td colspan=4>{{guestRow.message | linebreaksbr}}</td>
