@@ -16,3 +16,8 @@ def addGuestbook(request):
 
     models.insert(name,password,message)
     return HttpResponseRedirect('/guestbook')
+
+def deleteForm(request):
+    return render(request,'guestbook/deleteform.html')
+
+

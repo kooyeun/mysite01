@@ -22,4 +22,5 @@ urlpatterns = [
    path('', mainviews.index),
    path('guestbook/', guestbookviews.index),
    path('guestbook/addGuestbook', guestbookviews.addGuestbook),
+   path('guestbook/deleteForm', guestbookviews.deleteForm),
 ]
