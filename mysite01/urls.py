@@ -21,4 +21,5 @@ import guestbook.views as guestbookviews
 urlpatterns = [
    path('', mainviews.index),
    path('guestbook/', guestbookviews.index),
+   path('guestbook/addGuestbook', guestbookviews.addGuestbook),
 ]
