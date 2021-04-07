@@ -34,4 +34,6 @@ urlpatterns = [
    path('guestbookOrm/deleteGuestbook', guestbookOrmviews.deleteGuestbook),
 
    path('user/joinform', userviews.joinform),
+   path('user/join', userviews.join),
+   path('user/joinsuccess', userviews.joinsuccess),
 ]
