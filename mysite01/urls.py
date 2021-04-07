@@ -1,5 +1,4 @@
 """mysite01 URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
 Examples:
@@ -14,26 +13,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-
 import main.views as mainviews
-import guestbook.views as guestbookviews
-import guestbookOrm.views as guestbookOrmviews
+import guestbook.views as guetbookviews
 import user.views as userviews
+import board.views as boardviews
 
 urlpatterns = [
-   path('', mainviews.index),
+    path('', mainviews.index),
 
-   path('guestbook/', guestbookviews.index),
-   path('guestbook/addGuestbook', guestbookviews.addGuestbook),
-   path('guestbook/deleteForm', guestbookviews.deleteForm),
-   path('guestbook/deleteGuestbook', guestbookviews.deleteGuestbook),
+    path('guestbook/', guetbookviews.index),
 
-   path('guestbookOrm/', guestbookOrmviews.index),
-   path('guestbookOrm/addGuestbook', guestbookOrmviews.addGuestbook),
-   path('guestbookOrm/deleteForm', guestbookOrmviews.deleteForm),
-   path('guestbookOrm/deleteGuestbook', guestbookOrmviews.deleteGuestbook),
+    path('user/joinform', userviews.joinform),
+    path('user/join', userviews.join),
+    path('user/joinsuccess', userviews.joinsuccess),
+    path('user/loginform', userviews.loginform),
+    path('user/login', userviews.login),
+    path('user/logout', userviews.logout),
+    path('user/updateform', userviews.updateform),
 
-   path('user/joinform', userviews.joinform),
-   path('user/join', userviews.join),
-   path('user/joinsuccess', userviews.joinsuccess),
+
 ]
