@@ -18,6 +18,7 @@ from django.urls import path
 import main.views as mainviews
 import guestbook.views as guestbookviews
 import guestbookOrm.views as guestbookOrmviews
+import user.views as userviews
 
 urlpatterns = [
    path('', mainviews.index),
@@ -31,4 +32,6 @@ urlpatterns = [
    path('guestbookOrm/addGuestbook', guestbookOrmviews.addGuestbook),
    path('guestbookOrm/deleteForm', guestbookOrmviews.deleteForm),
    path('guestbookOrm/deleteGuestbook', guestbookOrmviews.deleteGuestbook),
+
+   path('user/joinform', userviews.joinform),
 ]

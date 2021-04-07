@@ -17,7 +17,7 @@ def findall():
 		        message,
                 date_format(reg_date,"%Y-%m-%d %p %h:%i:%s") as reg_date
 	        from guestbook
-        order by reg_date desc
+        order by no desc
         '''
         cursor.execute(sql)
 
