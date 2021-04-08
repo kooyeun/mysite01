@@ -16,7 +16,7 @@ def findby_email_and_password(email, password):
         cursor = db.cursor(DictCursor)
 
         # SQL 실행
-        sql = 'select no, name from user where email=%s and password = %s'
+        sql = 'select no, name, email, password from user where email=%s and password = %s'
         cursor.execute(sql, (email, password))
 
         # 결과 받아오기

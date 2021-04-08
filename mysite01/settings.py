@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'main',
     'guestbook',
+    'guestbookOrm',
     'user',
     'board',
     'django.contrib.auth',
