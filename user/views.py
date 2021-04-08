@@ -58,4 +58,17 @@ def updateform(request):
 
 
 def update(request):
-    pass
+    no = request.session["authuser"]["no"]
+    name = request.POST["name"]
+    email = request.session["authuser"]["email"]
+    password = request.POST["password"]
+    gender = request.POST["gender"]
+
+    models.update(name, password, gender, no)
+
+    del request.session["authuser"]
+
+    userInformation = models.findby_email_and_password(email, password)
+    request.session["authuser"] = userInformation
+    return HttpResponseRedirect('/')
+

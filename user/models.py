@@ -16,7 +16,7 @@ def findby_email_and_password(email, password):
         cursor = db.cursor(DictCursor)
 
         # SQL 실행
-        sql = 'select no, name, email, password from user where email=%s and password = %s'
+        sql = 'select no, name, email, password, gender from user where email=%s and password = %s'
         cursor.execute(sql, (email, password))
 
         # 결과 받아오기
@@ -59,8 +59,30 @@ def insert(name, email, password, gender):
         print(f'error: {e}')
 
 
-def update(name, password):
-    pass
+def update(name, password, gender, no):
+    try:
+        # 연결
+        db = conn()
+
+        # cursor 생성
+        cursor = db.cursor()
+
+        # SQL 실행
+        sql = 'update user set name=%s,password=%s, gender=%s where no=%s;'
+        count = cursor.execute(sql, (name, password, gender, no))
+
+        # commit
+        db.commit()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        # 결과 반환
+        return count == 1
+
+    except OperationalError as e:
+        print(f'error: {e}')
 
 
 def conn():
