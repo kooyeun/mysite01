@@ -8,10 +8,10 @@ LIST_COUNT = 10
 
 
 def index(request):
-    page = request.GET.get("p")
-    page = 1 if page is None else int(page)
+    # page = request.GET.get("p")
+    # page = 1 if page is None else int(page)
 
-    print(page)
+    # print(page)
 
     # totalcount = models.count()
     # boardlist = models.findall(page, LIST_COUNT)
@@ -27,8 +27,10 @@ def index(request):
     #     'curpage': 2
     #
     # }
+    boardList = models.boardList()
+    data = {'boardList':boardList}
 
-    return render(request, 'board/index.html')
+    return render(request, 'board/index.html',data)
 
 
 def view(request):
