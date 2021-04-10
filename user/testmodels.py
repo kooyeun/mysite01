@@ -6,7 +6,7 @@ def test_models_insert():
 
 
 def test_models_findby_email_and_password():
-    result = models.findby_email_and_password('michol@gmail.com', '1234')
+    result = models.findby_email_and_password('jjedis13@naver.com', '1234')
     print(result)
 
 
