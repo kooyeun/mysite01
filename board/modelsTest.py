@@ -9,7 +9,12 @@ def testOneBoard():
     result=models.oneBoard(2)
     print(result)
 
+def insertBoard():
+    models.insertBoard('title1','content1',5)
 
 
-#testBoardList()
-testOneBoard()
+if __name__ == '__main__' :
+
+    # testOneBoard()
+    # insertBoard()
+    testBoardList()

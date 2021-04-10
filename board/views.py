@@ -1,5 +1,6 @@
 from math import ceil
 
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from board import models
@@ -27,6 +28,10 @@ def index(request):
     #     'curpage': 2
     #
     # }
+
+    # 유저 상태 확인
+
+
     boardList = models.boardList()
     data = {'boardList':boardList}
 
@@ -34,7 +39,34 @@ def index(request):
 
 
 def view(request):
+    # 유저 상태 확인
+
+
     no = request.GET["no"]
     result = models.oneBoard(no)
     data = {'oneBoard':result}
     return render(request, 'board/view.html', data)
+
+
+def writeform(request):
+    # 유저 상태 확인
+
+    return render(request, 'board/writeform.html')
+
+
+def write(request):
+    # 유저 상태 확인
+
+    title = request.POST["title"]
+    content = request.POST["content"]
+    userNo = request.session["authuser"]["no"]
+    models.insertBoard(title,content,userNo)
+
+    return HttpResponseRedirect('/board')
+
+
+
+
+# 유저 상태 확인
+def checkUserState(request):
+    pass

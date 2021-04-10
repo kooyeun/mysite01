@@ -71,3 +71,28 @@ def oneBoard(no):
 
     except OperationalError as e:
         print(f'error : {e}')
+
+def insertBoard(title,content,user_no):
+    try:
+        # connection
+        db = connection()
+
+        # cusor
+        cursor = db.cursor()
+
+        # SQL
+        sql = 'insert into board values(null,%s,%s,0,now(),ifnull((select no from(select max(g_no) as no from board) as board_case),0)+1,1,0,%s)'
+        count = cursor.execute(sql,(title,content,user_no))
+
+        # commit
+        db.commit()
+
+        #
+        cursor.close()
+        db.close()
+
+        #
+        return count == 1
+
+    except OperationalError as e:
+        print(f'error : {e}')
