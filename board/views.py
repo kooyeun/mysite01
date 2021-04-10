@@ -86,6 +86,14 @@ def update(request):
     return HttpResponseRedirect(f'/board/view?no={boardNo}')
 
 
+def delete(request):
+    # 유저 상태 확인
+
+    boardNo = request.GET["no"]
+    models.deleteBoard(boardNo)
+
+    return HttpResponseRedirect('/board')
+
 
 
 

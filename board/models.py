@@ -22,7 +22,7 @@ def getBoardList():
 
         # SQL 실행
         sql = '''
-        select b.no, b.title, a.name, b.hit, date_format(b.reg_date,"%Y-%m-%d %p %h:%i:%s") as reg_date
+        select b.no, b.title, a.name, b.hit, date_format(b.reg_date,"%Y-%m-%d %p %h:%i:%s") as reg_date,b.del
             from user a, board b 
             where a.no=b.user_no 
         order by b.g_no desc, b.o_no asc
@@ -53,7 +53,7 @@ def getOneBoard(no):
 
         # SQL 실행
         sql = '''
-        select b.name, a.title, a.contents, a.g_no, a.o_no, a.depth, a.no
+        select b.name, a.title, a.contents, a.g_no, a.o_no, a.depth, a.no, a.del
             from board a,user b
             where a.user_no=b.no
             and a.no=%s
@@ -83,7 +83,7 @@ def insertBoard(title,content,user_no):
         cursor = db.cursor()
 
         # SQL
-        sql = 'insert into board values(null,%s,%s,0,now(),ifnull((select no from(select max(g_no) as no from board) as board_case),0)+1,1,0,%s)'
+        sql = 'insert into board values(null,%s,%s,0,now(),ifnull((select no from(select max(g_no) as no from board) as board_case),0)+1,1,0,%s,0)'
         count = cursor.execute(sql,(title,content,user_no))
 
         # commit
@@ -111,6 +111,32 @@ def updateBoard(title, content, boardNo):
         # SQL 실행
         sql = 'update board set title=%s,contents=%s where no=%s'
         count = cursor.execute(sql, (title, content, boardNo))
+
+        # commit
+        db.commit()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        # 결과 반환
+        return count == 1
+
+    except OperationalError as e:
+        print(f'error: {e}')
+
+
+def deleteBoard(boardNo):
+    try:
+        # 연결
+        db = connection()
+
+        # cursor 생성
+        cursor = db.cursor()
+
+        # SQL 실행
+        sql = "update board set title='삭제된 글 입니다.',contents='작성자에 의해 삭제된 글입니다',hit=0,reg_date=now(),del=1 where no=%s"
+        count = cursor.execute(sql, (boardNo,))
 
         # commit
         db.commit()
