@@ -32,7 +32,7 @@ def index(request):
     # 유저 상태 확인
 
 
-    boardList = models.boardList()
+    boardList = models.getBoardList()
     data = {'boardList':boardList}
 
     return render(request, 'board/index.html',data)
@@ -42,9 +42,9 @@ def view(request):
     # 유저 상태 확인
 
 
-    no = request.GET["no"]
-    result = models.oneBoard(no)
-    data = {'oneBoard':result}
+    boardNo = request.GET["no"]
+    oneBoard = models.getOneBoard(boardNo)
+    data = {'oneBoard':oneBoard}
     return render(request, 'board/view.html', data)
 
 
@@ -63,6 +63,30 @@ def write(request):
     models.insertBoard(title,content,userNo)
 
     return HttpResponseRedirect('/board')
+
+
+def updateform(request):
+    # 유저 상태 확인
+
+    boardNo = request.GET["no"]
+    oneBoard = models.getOneBoard(boardNo)
+    data = { "oneBoard":oneBoard }
+
+    return render(request, 'board/updateform.html',data)
+
+
+def update(request):
+    # 유저 상태 확인
+
+    boardNo = request.POST["boardNo"]
+    title = request.POST["title"]
+    content = request.POST["content"]
+    models.updateBoard(title,content,boardNo)
+
+    return HttpResponseRedirect(f'/board/view?no={boardNo}')
+
+
+
 
 
 

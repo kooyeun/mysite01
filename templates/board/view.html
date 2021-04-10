@@ -23,14 +23,11 @@
 						</td>
 					</tr>
 				</table>
-				<input type="hidden" name="g_no" value="{{oneBoard.g_no}}" >
-				<input type="hidden" name="o_no" value="{{oneBoard.o_no}}" >
-				<input type="hidden" name="depth" value="{{oneBoard.depth}}" >
 				<div class="bottom">
 					<a href="/board">글목록</a>
-
-					<a href="">글수정</a>
-
+					{% if request.session.authuser != None %}
+					<a href="/board/updateform?no={{oneBoard.no}}">글수정</a>
+					{% endif %}
 					{% if request.session.authuser != None %}
 					<a href="">답글</a>
 					{% endif %}

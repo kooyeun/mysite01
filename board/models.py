@@ -12,7 +12,7 @@ def connection():
                      charset='utf8')
 
 
-def boardList():
+def getBoardList():
     try:
         # 연결
         db = connection()
@@ -42,7 +42,8 @@ def boardList():
     except OperationalError as e:
         print(f'error : {e}')
 
-def oneBoard(no):
+
+def getOneBoard(no):
     try:
         # 연결
         db = connection()
@@ -52,7 +53,7 @@ def oneBoard(no):
 
         # SQL 실행
         sql = '''
-        select b.name, a.title, a.contents, a.g_no, a.o_no, a.depth
+        select b.name, a.title, a.contents, a.g_no, a.o_no, a.depth, a.no
             from board a,user b
             where a.user_no=b.no
             and a.no=%s
@@ -71,6 +72,7 @@ def oneBoard(no):
 
     except OperationalError as e:
         print(f'error : {e}')
+
 
 def insertBoard(title,content,user_no):
     try:
@@ -96,3 +98,29 @@ def insertBoard(title,content,user_no):
 
     except OperationalError as e:
         print(f'error : {e}')
+
+
+def updateBoard(title, content, boardNo):
+    try:
+        # 연결
+        db = connection()
+
+        # cursor 생성
+        cursor = db.cursor()
+
+        # SQL 실행
+        sql = 'update board set title=%s,contents=%s where no=%s'
+        count = cursor.execute(sql, (title, content, boardNo))
+
+        # commit
+        db.commit()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        # 결과 반환
+        return count == 1
+
+    except OperationalError as e:
+        print(f'error: {e}')
