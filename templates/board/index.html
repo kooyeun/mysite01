@@ -22,11 +22,11 @@
 					{% for oneBoard in boardList %}
 					<tr>
 						<td>{{oneBoard.no}}</td>
-						<td><a href="" style="text-align:left; padding-left:0px">{{oneBoard.title}}</a></td>
+						<td><a href="/board/view?no={{oneBoard.no}}" style="text-align:left; padding-left:0px">{{oneBoard.title}}</a></td>
 						<td>{{oneBoard.name}}</td>
 						<td>{{oneBoard.hit}}</td>
 						<td>{{oneBoard.reg_date}}</td>
-						<td><a href="" class="del">삭제</a></td>
+						<td><a href="/board/delete?no={{oneBoard.no}}" class="del">삭제</a></td>
 					</tr>
 					{% endfor %}
 <!--				<tr>

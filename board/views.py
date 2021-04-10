@@ -34,4 +34,7 @@ def index(request):
 
 
 def view(request):
-    return render(request, 'board/view.html')
+    no = request.GET["no"]
+    result = models.oneBoard(no)
+    data = {'oneBoard':result}
+    return render(request, 'board/view.html', data)
