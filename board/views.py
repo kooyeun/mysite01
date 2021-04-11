@@ -131,4 +131,7 @@ def search(request):
 
 # 유저 상태 확인
 def checkUserState(request):
-    pass
+    if request.session.get("authuser") == None :
+        return 'logout'
+    else :
+        pass# request.session["authuser"]["name"] ==

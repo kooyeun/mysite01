@@ -53,7 +53,7 @@ def getOneBoard(no):
 
         # SQL 실행
         sql = '''
-        select b.name, a.title, a.contents, a.g_no, a.o_no, a.depth, a.no, a.del
+        select b.name, a.title, a.contents, a.g_no, a.o_no, a.depth, a.no, a.user_no, a.del
             from board a,user b
             where a.user_no=b.no
             and a.no=%s

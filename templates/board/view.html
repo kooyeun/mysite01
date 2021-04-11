@@ -25,7 +25,7 @@
 				</table>
 				<div class="bottom">
 					<a href="/board">글목록</a>
-					{% if request.session.authuser != None %}
+					{% if request.session.authuser != None and request.session.authuser.no == oneBoard.user_no %}
 					<a href="/board/updateform?no={{oneBoard.no}}">글수정</a>
 					{% endif %}
 					{% if request.session.authuser != None %}
