@@ -179,12 +179,15 @@ def reply(request):
 def search(request):
 
     keyword = request.POST["kwd"]
-    searchedBoardList = models.getSearchedBoardList(keyword)
-    data = {'boardList':searchedBoardList}
+    if keyword != '' :
+        searchedBoardList = models.getSearchedBoardList(keyword)
+        data = {'boardList':searchedBoardList}
 
-    del request.session["requestToken"]
-    request.session["requestToken"] = 'indexPage'
-    return render(request, 'board/index.html',data)
+        del request.session["requestToken"]
+        request.session["requestToken"] = 'indexPage'
+        return render(request, 'board/index.html',data)
+    else :
+        return HttpResponseRedirect('/board')
 
 # 유저 상태 확인
 #def checkUserState(request):
