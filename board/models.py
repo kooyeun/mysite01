@@ -150,3 +150,55 @@ def deleteBoard(boardNo):
 
     except OperationalError as e:
         print(f'error: {e}')
+
+
+def updateForinsertReply(originalBoardG_no, originalBoardO_no):
+    try:
+        # 연결
+        db = connection()
+
+        # cursor 생성
+        cursor = db.cursor()
+
+        # SQL 실행
+        sql = 'update board set o_no=o_no+1 where g_no=%s and o_no>=%s+1'
+        count = cursor.execute(sql, (originalBoardG_no, originalBoardO_no))
+
+        # commit
+        db.commit()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        # 결과 반환
+        return count == 1
+
+    except OperationalError as e:
+        print(f'error: {e}')
+
+
+def insertForinsertReply(title, content, originalBoardG_no, originalBoardO_no, originalBoardDepth, user_no):
+    try:
+        # connection
+        db = connection()
+
+        # cusor
+        cursor = db.cursor()
+
+        # SQL
+        sql = 'insert into board values(null,%s,%s,0,now(),%s,%s+1,%s+1,%s,0)'
+        count = cursor.execute(sql,(title, content, originalBoardG_no, originalBoardO_no, originalBoardDepth, user_no))
+
+        # commit
+        db.commit()
+
+        #
+        cursor.close()
+        db.close()
+
+        #
+        return count == 1
+
+    except OperationalError as e:
+        print(f'error : {e}')

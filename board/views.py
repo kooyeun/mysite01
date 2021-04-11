@@ -95,8 +95,28 @@ def delete(request):
     return HttpResponseRedirect('/board')
 
 
+def replyform(request):
+    # 유저 상태 확인
+
+    return render(request, 'board/replyform.html')
 
 
+def reply(request):
+    # 유저 상태 확인
+
+    originalBoardNo = request.POST["originalBoardNo"]
+    originalBoard = models.getOneBoard(originalBoardNo)
+    originalBoardG_no = originalBoard["g_no"]
+    originalBoardO_no = originalBoard["o_no"]
+    originalBoardDepth = originalBoard["depth"]
+    models.updateForinsertReply(originalBoardG_no,originalBoardO_no)
+
+    title = request.POST["title"]
+    content = request.POST["content"]
+    userNo = request.session["authuser"]["no"]
+    models.insertForinsertReply(title,content,originalBoardG_no,originalBoardO_no,originalBoardDepth,userNo)
+
+    return HttpResponseRedirect('/board')
 
 
 # 유저 상태 확인
