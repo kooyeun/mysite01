@@ -1,5 +1,5 @@
 {% extends '../base.html' %}
-
+{% load mathfilters %}
 {% block css_link %}
 <link href="/assets/css/board.css" rel="stylesheet" type="text/css">
 {% endblock %}
@@ -22,7 +22,13 @@
 					{% for oneBoard in boardList %}
 					<tr>
 						<td>{{oneBoard.no}}</td>
-						<td><a href="/board/view?no={{oneBoard.no}}" style="text-align:left; padding-left:0px">{{oneBoard.title}}</a></td>
+						{% if oneBoard.depth == 0 %}
+						<td><a href="/board/view?no={{oneBoard.no}}" style="text-align:left; padding-left:0px">
+							{{oneBoard.title}}</a></td>
+						{% else %}
+						<td><a href="/board/view?no={{oneBoard.no}}" style="text-align:left; padding-left:{{oneBoard.depth|mul:30}}px">
+							<img src="/assets/images/reply.png"/>{{oneBoard.title}}</a></td>
+						{% endif %}
 						{% if oneBoard.del != 1 %}
 						<td>{{oneBoard.name}}</td>
 						{% else %}

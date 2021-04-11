@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'guestbookOrm',
     'user',
     'board',
+    'mathfilters',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
