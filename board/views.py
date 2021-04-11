@@ -5,7 +5,7 @@ from django.shortcuts import render
 
 from board import models
 
-LIST_COUNT = 10
+# LIST_COUNT = 10
 
 
 def index(request):
@@ -29,109 +29,166 @@ def index(request):
     #
     # }
 
-    # 유저 상태 확인
-
 
     boardList = models.getBoardList()
     data = {'boardList':boardList}
+
+    del request.session["requestToken"]
+    request.session["requestToken"] = 'indexPage'
 
     return render(request, 'board/index.html',data)
 
 
 def view(request):
-    # 유저 상태 확인
+    # 정상적인 경로 접근 확인
+    requestToken = request.session["requestToken"]
+    if requestToken == 'indexPage' or requestToken == 'updateFormPage' or requestToken == 'replyFormPage':
 
+        boardNo = request.GET.get("no")
+        oneBoard = models.getOneBoard(boardNo)
+        data = {'oneBoard':oneBoard}
 
-    boardNo = request.GET["no"]
-    oneBoard = models.getOneBoard(boardNo)
-    data = {'oneBoard':oneBoard}
-    return render(request, 'board/view.html', data)
+        del request.session["requestToken"]
+        request.session["requestToken"] = 'viewPage'
+
+        return render(request, 'board/view.html', data)
+    else:
+        return HttpResponseRedirect('/board')
 
 
 def writeform(request):
-    # 유저 상태 확인
+    # 정상적인 경로 접근 및 유저상태 확인
+    requestToken = request.session["requestToken"]
+    if (requestToken == 'indexPage' or requestToken == 'writeFormPage') and request.session.get("authuser") != None:
 
-    return render(request, 'board/writeform.html')
+        del request.session["requestToken"]
+        request.session["requestToken"] = 'writeFormPage'
+        return render(request, 'board/writeform.html')
+    else:
+        return HttpResponseRedirect('/board')
 
 
 def write(request):
-    # 유저 상태 확인
+    # 정상적인 경로 접근 및 유저상태 확인
+    if request.session["requestToken"] == 'writeFormPage' and request.session.get("authuser") != None:
+        title = request.POST["title"]
+        content = request.POST["content"]
 
-    title = request.POST["title"]
-    content = request.POST["content"]
-    userNo = request.session["authuser"]["no"]
-    models.insertBoard(title,content,userNo)
+        # 빈칸으로 구성된 글 생성 체크
+        if title != '' and content != '':
+            userNo = request.session["authuser"]["no"]
+            models.insertBoard(title,content,userNo)
 
-    return HttpResponseRedirect('/board')
+            return HttpResponseRedirect('/board')
+        else:
+            return HttpResponseRedirect('/board/writeform')
+    else:
+        return HttpResponseRedirect('/board')
 
 
 def updateform(request):
-    # 유저 상태 확인
+    # 정상적인 경로 접근 및 유저상태 확인
+    if request.session["requestToken"] == 'viewPage' and request.session.get("authuser") != None:
+        boardNo = request.GET["no"]
+        oneBoard = models.getOneBoard(boardNo)
 
-    boardNo = request.GET["no"]
-    oneBoard = models.getOneBoard(boardNo)
-    data = { "oneBoard":oneBoard }
+        # 글 작성자 본인 확인
+        if request.session["authuser"]["no"] == oneBoard["user_no"] :
+            data = { "oneBoard":oneBoard }
 
-    return render(request, 'board/updateform.html',data)
+            del request.session["requestToken"]
+            request.session["requestToken"] = 'updateFormPage'
+            return render(request, 'board/updateform.html',data)
+        else:
+            return HttpResponseRedirect('/board/view')
+    else:
+        return HttpResponseRedirect('/board/view')
 
 
 def update(request):
-    # 유저 상태 확인
+    # 정상적인 경로 접근 및 유저상태 확인
+    if request.session["requestToken"] == 'updateFormPage' and request.session.get("authuser") != None:
+        boardNo = request.POST["boardNo"]
+        oneBoard = models.getOneBoard(boardNo)
 
-    boardNo = request.POST["boardNo"]
-    title = request.POST["title"]
-    content = request.POST["content"]
-    models.updateBoard(title,content,boardNo)
+        # 글 작성자 본인 확인
+        if request.session["authuser"]["no"] == oneBoard["user_no"]:
+            title = request.POST["title"]
+            content = request.POST["content"]
+            models.updateBoard(title,content,boardNo)
 
-    return HttpResponseRedirect(f'/board/view?no={boardNo}')
+            return HttpResponseRedirect(f'/board/view?no={boardNo}')
+        else:
+            return HttpResponseRedirect('/board/view')
+    else:
+        return HttpResponseRedirect('/board/view')
 
 
 def delete(request):
-    # 유저 상태 확인
+    # 정상적인 경로 접근 및 유저상태 확인
+    if request.session["requestToken"] == 'indexPage' and request.session.get("authuser") != None:
+        boardNo = request.GET["no"]
+        oneBoard = models.getOneBoard(boardNo)
 
-    boardNo = request.GET["no"]
-    models.deleteBoard(boardNo)
-
-    return HttpResponseRedirect('/board')
+        # 글 작성자 본인 확인
+        if request.session["authuser"]["no"] == oneBoard["user_no"]:
+            models.deleteBoard(boardNo)
+            return HttpResponseRedirect('/board')
+        else:
+            return HttpResponseRedirect('/board')
+    else:
+        return HttpResponseRedirect('/board')
 
 
 def replyform(request):
-    # 유저 상태 확인
+    # 정상적인 경로 접근 및 유저상태 확인
+    requestToken = request.session["requestToken"]
+    if (requestToken == 'viewPage' or requestToken == 'replyFormPage') and request.session.get("authuser") != None:
 
-    return render(request, 'board/replyform.html')
+        del request.session["requestToken"]
+        request.session["requestToken"] = 'replyFormPage'
+        return render(request, 'board/replyform.html')
+    else:
+        return HttpResponseRedirect('/board')
 
 
 def reply(request):
-    # 유저 상태 확인
+    # 정상적인 경로 접근 및 유저상태 확인
+    if request.session["requestToken"] == 'replyFormPage' and request.session.get("authuser") != None:
+        title = request.POST["title"]
+        content = request.POST["content"]
+        originalBoardNo = request.POST["originalBoardNo"]
 
-    originalBoardNo = request.POST["originalBoardNo"]
-    originalBoard = models.getOneBoard(originalBoardNo)
-    originalBoardG_no = originalBoard["g_no"]
-    originalBoardO_no = originalBoard["o_no"]
-    originalBoardDepth = originalBoard["depth"]
-    models.updateForinsertReply(originalBoardG_no,originalBoardO_no)
+        # 빈칸으로 구성된 글 생성 체크
+        if title != '' and content != '':
+            originalBoard = models.getOneBoard(originalBoardNo)
+            originalBoardG_no = originalBoard["g_no"]
+            originalBoardO_no = originalBoard["o_no"]
+            originalBoardDepth = originalBoard["depth"]
+            models.updateForinsertReply(originalBoardG_no,originalBoardO_no)
 
-    title = request.POST["title"]
-    content = request.POST["content"]
-    userNo = request.session["authuser"]["no"]
-    models.insertForinsertReply(title,content,originalBoardG_no,originalBoardO_no,originalBoardDepth,userNo)
+            userNo = request.session["authuser"]["no"]
+            models.insertForinsertReply(title,content,originalBoardG_no,originalBoardO_no,originalBoardDepth,userNo)
 
-    return HttpResponseRedirect('/board')
-
+            return HttpResponseRedirect('/board')
+        else:
+            return HttpResponseRedirect(f'/board/replyform?no={originalBoardNo}')
+    else:
+        return HttpResponseRedirect('/board')
 
 def search(request):
-
-    # 유저 상태 확인
 
     keyword = request.POST["kwd"]
     searchedBoardList = models.getSearchedBoardList(keyword)
     data = {'boardList':searchedBoardList}
 
+    del request.session["requestToken"]
+    request.session["requestToken"] = 'indexPage'
     return render(request, 'board/index.html',data)
 
 # 유저 상태 확인
-def checkUserState(request):
-    if request.session.get("authuser") == None :
-        return 'logout'
-    else :
-        pass# request.session["authuser"]["name"] ==
+#def checkUserState(request):
+#    if request.session.get("authuser") == None :
+#        return 'logout'
+#    else :
+#        if request.session["authuser"]["name"] ==
