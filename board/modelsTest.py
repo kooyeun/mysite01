@@ -25,6 +25,11 @@ def updateForReply():
 def insertForReply():
     models.insertForinsertReply('insert reply test01','test',6,1,0,5)
 
+def getSearchedBoardList():
+    results = models.getSearchedBoardList('test')
+    for result in results:
+        print(result)
+
 if __name__ == '__main__' :
 
     # testOneBoard()
@@ -32,5 +37,6 @@ if __name__ == '__main__' :
     #updateBoard()
     #deleteBoard()
     # updateForReply()
-    insertForReply()
-    testBoardList()
+    #insertForReply()
+    getSearchedBoardList()
+    #testBoardList()

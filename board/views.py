@@ -119,6 +119,16 @@ def reply(request):
     return HttpResponseRedirect('/board')
 
 
+def search(request):
+
+    # 유저 상태 확인
+
+    keyword = request.POST["kwd"]
+    searchedBoardList = models.getSearchedBoardList(keyword)
+    data = {'boardList':searchedBoardList}
+
+    return render(request, 'board/index.html',data)
+
 # 유저 상태 확인
 def checkUserState(request):
     pass
