@@ -192,6 +192,7 @@ def reply(request):
 def search(request):
 
     keyword = request.POST["kwd"]
+    # 아무것도 없는 검색어 체크
     if keyword != '' :
         searchedBoardList = models.getSearchedBoardList(keyword)
         data = {'boardList':searchedBoardList}
