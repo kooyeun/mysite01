@@ -30,6 +30,9 @@ def getSearchedBoardList():
     for result in results:
         print(result)
 
+def updateBoardView(boardNo):
+    models.updateBoardView(boardNo)
+
 if __name__ == '__main__' :
 
     # testOneBoard()
@@ -38,5 +41,6 @@ if __name__ == '__main__' :
     #deleteBoard()
     # updateForReply()
     #insertForReply()
-    getSearchedBoardList()
-    #testBoardList()
+    #getSearchedBoardList()
+    #updateBoardView(9)
+    testBoardList()

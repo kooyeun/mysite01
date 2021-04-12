@@ -33,6 +33,7 @@ def index(request):
     boardList = models.getBoardList()
     data = {'boardList':boardList}
 
+    # 토큰 갱신
     del request.session["requestToken"]
     request.session["requestToken"] = 'indexPage'
 
@@ -48,6 +49,15 @@ def view(request):
         oneBoard = models.getOneBoard(boardNo)
         data = {'oneBoard':oneBoard}
 
+        # 게시글 조회수 갱신 구현
+        authuserNo = 0
+        if request.session.get("authuser") != None:
+            authuserNo = request.session["authuser"]["no"]
+
+        if requestToken == 'indexPage' and authuserNo != oneBoard["user_no"] and oneBoard["del"] != 1:
+            models.updateBoardView(boardNo)
+
+        # 토큰 갱신
         del request.session["requestToken"]
         request.session["requestToken"] = 'viewPage'
 
@@ -61,6 +71,7 @@ def writeform(request):
     requestToken = request.session["requestToken"]
     if (requestToken == 'indexPage' or requestToken == 'writeFormPage') and request.session.get("authuser") != None:
 
+        # 토큰 갱신
         del request.session["requestToken"]
         request.session["requestToken"] = 'writeFormPage'
         return render(request, 'board/writeform.html')
@@ -96,6 +107,7 @@ def updateform(request):
         if request.session["authuser"]["no"] == oneBoard["user_no"] :
             data = { "oneBoard":oneBoard }
 
+            # 토큰 갱신
             del request.session["requestToken"]
             request.session["requestToken"] = 'updateFormPage'
             return render(request, 'board/updateform.html',data)
@@ -145,6 +157,7 @@ def replyform(request):
     requestToken = request.session["requestToken"]
     if (requestToken == 'viewPage' or requestToken == 'replyFormPage') and request.session.get("authuser") != None:
 
+        # 토큰 갱신
         del request.session["requestToken"]
         request.session["requestToken"] = 'replyFormPage'
         return render(request, 'board/replyform.html')
@@ -183,15 +196,9 @@ def search(request):
         searchedBoardList = models.getSearchedBoardList(keyword)
         data = {'boardList':searchedBoardList}
 
+        # 토큰 갱신
         del request.session["requestToken"]
         request.session["requestToken"] = 'indexPage'
         return render(request, 'board/index.html',data)
     else :
         return HttpResponseRedirect('/board')
-
-# 유저 상태 확인
-#def checkUserState(request):
-#    if request.session.get("authuser") == None :
-#        return 'logout'
-#    else :
-#        if request.session["authuser"]["name"] ==

@@ -236,3 +236,28 @@ def getSearchedBoardList(keyword):
 
     except OperationalError as e:
         print(f'error : {e}')
+
+
+def updateBoardView(boardNo):
+    try:
+        # 연결
+        db = connection()
+
+        # cursor 생성
+        cursor = db.cursor()
+
+        # SQL 실행
+        sql = 'update board set hit=hit+1 where no=%s'
+        count = cursor.execute(sql, (boardNo,))
+
+        # commit
+        db.commit()
+
+        # 자원 정리
+        cursor.close()
+        db.close()
+
+        # 결과 반환
+        return count == 1
+    except OperationalError as e:
+        print(f'error: {e}')
