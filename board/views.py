@@ -43,7 +43,7 @@ def index(request):
 def view(request):
     # 정상적인 경로 접근 확인
     requestToken = request.session["requestToken"]
-    if requestToken == 'indexPage' or requestToken == 'updateFormPage' or requestToken == 'replyFormPage':
+    if requestToken == 'indexPage' or requestToken == 'updateFormPage' or requestToken == 'replyFormPage' or requestToken == 'viewPage':
 
         boardNo = request.GET.get("no")
         oneBoard = models.getOneBoard(boardNo)
