@@ -22,7 +22,7 @@ def getBoardList():
 
         # SQL 실행
         sql = '''
-        select b.no, b.title, a.name, b.hit, date_format(b.reg_date,"%Y-%m-%d %p %h:%i:%s") as reg_date, b.depth, b.del
+        select b.no, b.title, a.name, b.hit, date_format(b.reg_date,"%Y-%m-%d %p %h:%i:%s") as reg_date, b.depth, b.user_no, b.del
             from user a, board b 
             where a.no=b.user_no 
         order by b.g_no desc, b.o_no asc
